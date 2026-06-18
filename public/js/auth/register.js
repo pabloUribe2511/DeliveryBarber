@@ -1,0 +1,51 @@
+import { registerUser } from "../../../src/controllers/user-controller.js";
+import {
+  validateName,
+  validateEmail,
+  validatePassword,
+} from "../../../src/utils/validators.js";
+
+const registerForm = document.getElementById("registerForm");
+
+registerForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const name = document.getElementById("name").value;
+
+  const email = document.getElementById("email").value;
+
+  const password = document.getElementById("password").value;
+
+  const nameError = validateName(name);
+
+  if (nameError) {
+    alert(nameError);
+    return;
+  }
+
+  const emailError = validateEmail(email);
+
+  if (emailError) {
+    alert(emailError);
+    return;
+  }
+
+  const passwordError = validatePassword(password);
+
+  if (passwordError) {
+    alert(passwordError);
+    return;
+  }
+
+  const result = registerUser(name, email, password, "client");
+
+  if (!result.success) {
+    alert(result.message);
+
+    return;
+  }
+
+  alert("Usuario registrado correctamente");
+
+  window.location.href = "../../../src/views/auth/login.html";
+});
